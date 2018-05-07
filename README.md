@@ -8,3 +8,4 @@
 
 [The Mqtt notes](http://chanchan.me/2018/02/26/mqtt/)
 
+${P_{ij} = 1}$
