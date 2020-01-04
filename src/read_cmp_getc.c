@@ -7,6 +7,8 @@
 #include <stdlib.h>
 
 #define BUFF_SIZE 1
+//read函数读取文件到屏幕
+//用于和getc比较速度
 //所有的系统功函数都应该检查返回值
 int main(int argc, char* argv[]){
     char buf[BUFF_SIZE];

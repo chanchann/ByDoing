@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
-
-// truncate 函数读文件大小
+// 实现mv指令
 int main(int argc, char** argv)
 {
-    int ret = truncate("../data/dict.cp", 250);
-    printf("ret = %d\n", ret);
+    link(argv[1], argv[2]);
+
+    unlink(argv[1]);
 
     return 0;
 }

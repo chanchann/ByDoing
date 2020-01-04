@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-
+//介绍open()的使用
 int main(int argc, char* argv[]){
     int fd1 = open("../data/dict.txt", O_RDONLY);
     int fd2 = open("../data/dict.txt.bak", O_RDONLY | O_CREAT, 0644); // 0644 rw-r--r--

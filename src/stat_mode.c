@@ -4,6 +4,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+
+// stat函数读取文件类型
+// 注意穿透
 int main(int argc, char** argv)
 {
     struct stat sbuf;

@@ -200,11 +200,11 @@ strace(mac下为dtruss) ，跟踪程序
 
 了解为什么fread/fwrite为什么要比系统调用read和write快(buf同设为1)
 
-![read](./assets/read.png)
+![read](../assets/read.png)
 
 优先使用库函数
 
-![pcb](./assets/pcb.png)
+![pcb](../assets/pcb.png)
 
 ## 阻塞 and 非阻塞
 
@@ -246,7 +246,7 @@ inode / dentry
 
 stat xx
 
-![inode]()
+![inode](../assets/inode.png)
 
 ## stat and lstat 
 
@@ -254,6 +254,40 @@ stat xx
 
 ln -s f f.soft
 
+![quanxianBit](../assets/qxBit.png)
 
+S_IFMT 
 
+st_size
 
+st_mode 
+
+## link and unlink
+
+硬链接：
+
+操作系统给每一个文件赋予唯一一个inode，当有相同的inode文件存在时，彼此同步
+
+Inode相同
+
+ln 1.c 1.hard 
+
+删除时，只将硬链接计数减一，减为0时，inode被释放
+
+软连接： 相当于win下的快捷方式
+
+要想软连接移动到任何地方都能访问，那要写上1.c的绝对路径
+
+他的大小为路径大小
+
+软连接本身的权限全开放
+
+ln -s 1.c 1.soft
+
+unlink: remove directory entry
+
+## opendir()/closedir()
+
+ulimit -a 
+
+## 实现递归遍历目录 ls -R
