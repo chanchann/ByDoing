@@ -39,6 +39,9 @@ void fetchdir(const char* dir, void (*fcn)(char*)) {
     }
     if(strlen(dir) + strlen(sdp->d_name) + 2 > sizeof(name)){
         fprintf(stderr, "fetchdir:name %s %s too long\n", dir, sdp->d_name);
+    }else{
+        sprintf(name, "%s/%s", dir, sdp->d_name);
+        (*fcn)(name); //What's this? 回调函数当参数传入
     }
 
 }

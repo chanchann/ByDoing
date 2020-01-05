@@ -291,3 +291,16 @@ unlink: remove directory entry
 ulimit -a 
 
 ## 实现递归遍历目录 ls -R
+
+## dup / dup2
+
+重定向
+
+cat ls.c > out
+
+cat ls.c >> out 追加
+
+## fcntl实现dup
+
+参3：传入被占用的，返回最小可用的
+    未被占用的，返回该值的文件描述符
