@@ -300,7 +300,80 @@ cat ls.c > out
 
 cat ls.c >> out 追加
 
+dup 文件描述符复制
+
+dup2 文件描述符复制，重定向
+
 ## fcntl实现dup
 
 参3：传入被占用的，返回最小可用的
+
     未被占用的，返回该值的文件描述符
+
+# 进程
+
+- 区分进程和程序
+
+程序:只占用磁盘空间
+
+进程:运行起来的程序，占用内存，cpu等系统资源
+
+MMU : 虚拟内存映射单元
+
+![mmu1](../assets/mmu1.png)
+
+![mmu2](../assets/mmu2.png)
+
+## pcb
+
+/usr/src/linux-headers-5.0.0-29/include/linux/sched.h
+
+struct task_struct
+
+PCB进程控制块：
+
+进程ID
+
+文件描述符表
+
+进程状态：初始，就绪，运行，挂起，终止
+
+进程工作目录位置
+
+umask
+
+信号相关信息资源
+
+用户ID和组id
+
+## 环境变量
+
+LD_LIBRARY_PATH 动态链接器
+
+PATH 可执行文件路径
+
+//echo $PATH
+
+SHELL 
+
+//echo $SHELL
+
+TERM
+
+LANG
+
+HOME
+
+env 查看所有的环境变量
+
+# 进程控制
+
+## fork***
+
+创建子进程
+
+![fork](../assets/fork.png)
+
+## 循环共享
+
+循环创建n个子进程

@@ -6,6 +6,10 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+/*
+ls-R简易版，对照ls-R.c看
+*/
+
 void isFile(char* name);
 
 //打开目录，读取，处理目录
