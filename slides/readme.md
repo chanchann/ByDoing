@@ -411,6 +411,12 @@ env 查看所有的环境变量
 
 ## exec函数族
 
+就是使进程执行某一程序，成功无返回值，失败返回-1
+
+execlp 借助PATH环境变量寻找执行程序
+
+execl 自己指定执行程序路径
+
 ![exec](../assets/exec.png)
 
 将当前进程的.text,.data替换为所要加载的程序的.text,.data，然后让进程从新的.text第一条指令开始执行，但进程ID不变，换核不换壳
@@ -459,6 +465,5 @@ return value:
 
     -1： fail
 
-    
 
 

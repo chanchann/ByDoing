@@ -6,6 +6,7 @@
         "stdlib.h": "c",
         "stat.h": "c",
         "types.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "wait.h": "c"
     }
 }
