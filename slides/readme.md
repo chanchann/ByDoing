@@ -417,6 +417,8 @@ execlp 借助PATH环境变量寻找执行程序
 
 execl 自己指定执行程序路径
 
+execvp ...
+
 ![exec](../assets/exec.png)
 
 将当前进程的.text,.data替换为所要加载的程序的.text,.data，然后让进程从新的.text第一条指令开始执行，但进程ID不变，换核不换壳
@@ -443,19 +445,56 @@ Thinking:如何可清除僵尸进程？
 
 ## wait()
 
+pid_t wait(int* status)
+
+参数： (传出)回收进程的状态
+
+返回值
+
+成功： 回收进程的pid
+
+失败 : -1  errno
+
+获取子进程正常终止值:
+
+WIFEXITED(status) --> 为真 --> 调用WEXUTSTATUS(status) --> 得到子进程退出值
+
+获取导致子进程异常终止信号:
+
+WIFSIGNALED(status) --> 为真 --> 调用WTERMSIG(status) --> 得到导致子进程异常终止的信号编号
+
 父进程调用wait函数可以回收子进程终止信息。改函数有三个功能
 
 1. 阻塞等待子进程退出
 
-2. 回收子进程残留资源
+2. 清理子进程残留在内核的PCB资源
 
-3. 获取子进程结束状态(退出原因)
+3. 通过传出参数，获取子进程结束状态(退出原因)
 
 kill -l 查看kill的信号
 
 ## waitpid()
 
-pid_t waitpid()
+可指定某一进程进行回收
+
+pid_t waitpid(pid_t pid, int *status, int options)
+
+args:
+
+pid：指定回收的子进程pid
+
+> 0 回收指定ID的子进程
+
+-1 回收任意子进程（相当于wait)
+
+0 回收和当前调用waitpid一个组的所有子进程
+
+< -1 回收指定进程组内的任意子进程
+
+
+status （传出）回收进程的状态
+
+options WNOHANG 指定回收方式为非阻塞
 
 return value:
 
@@ -463,7 +502,20 @@ return value:
 
     0 : 函数调用时,第三个参数指定WNOHANG,并且没有子进程结束
 
-    -1： fail
+    -1 : fail, errno
 
+![waitpid](../assets/waitpid.png)
+
+总结：wait，waitpid 一次调用，回收一个子进程
+
+想回收多个，while
+
+waitpid(-1, &status, 0) == wait(&status)
+
+## 进程之间通信
+
+InterProcess Communication
+
+![IPC](../assets/ipc.png)
 
 

@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 /*
 此代码显示waitpid用法和性质
+知道这段代码为什么pid不对
 */
 int main(int argc, char** argv)
 {
@@ -15,7 +16,7 @@ int main(int argc, char** argv)
         // 表示这个是子进程，不让他继续生产孙子，直接break出去
         if(fork() == 0){
             if(i == 2){
-                pid = getpid();
+                pid = getpid();  //这里的pid是子进程的，父进程得到的pid为0，wrong
                 printf("--------pid = %d--------\n", pid);
             }
             break;
@@ -30,6 +31,7 @@ int main(int argc, char** argv)
         //If pid is -1, the call waits for any child process
         //在options参数中指定WNOHANG可以使父进程不阻塞而立即返回
         //因为这里加了WNOHANG，所以如果没有任何进程回收，应该返回0
+        printf("-------in parent, before waitpid, pid = %d\n", pid);
         wpid = waitpid(pid, NULL, 0); // 指定一个进程回收
         
         if(wpid == -1){
