@@ -4,6 +4,10 @@
 #include <string.h>
 #include <fcntl.h>
 
+/*
+此函数了解pipe(管道)
+*/
+
 void sys_err(const char* str){
     perror(str);
     exit(1);
