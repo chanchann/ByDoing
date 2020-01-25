@@ -586,3 +586,9 @@ int pipe(int fd[2])
 2. 有读端 
 
 1)管道已满，阻塞等待
+
+
+ulimit -a 可以查pipe缓冲区大小(pipe size)
+
+利用fpathconf函数，借助参数选项来查看
+
