@@ -592,3 +592,9 @@ ulimit -a 可以查pipe缓冲区大小(pipe size)
 
 利用fpathconf函数，借助参数选项来查看
 
+## FIFO
+
+## 文件进程间通信
+
+
+ 
