@@ -32,14 +32,14 @@ int main(int argc, char** argv)
     int fd[2];
     int ret;
     pid_t pid;
-    ret = pipe(fd);
+    ret = pipe(fd);   //父进程先创建一根管道，持有管道的读端和写端
     if(ret == -1){
         sys_err("pipe error");
     }
-    pid = fork();
+    pid = fork();  //子进程同样持有管道的读和写端
     if(pid == -1){
         sys_err("fork error");
-    }else if(pid > 0){
+    }else if(pid > 0){  
         close(fd[0]); // 父进程关闭读端
         // dup2(1,2) 1将指针赋值给2，2指向1所指向
         // 这里就是标准输出指向写端

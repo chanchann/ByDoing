@@ -34,11 +34,11 @@ int main(int argc, char** argv)
         }
     }
     //可以通过下标判断是哪个进程
-    if(i == 2){
+    if(i == 2){  //父进程不参与管道的使用，只是用于回收
         //这里需要画图分析一番
-        close(fd[0]);
+        close(fd[0]);  //所以父进程的读写端都关闭
         close(fd[1]);
-        wait(NULL);
+        wait(NULL);  //回收子进程
         wait(NULL);
     }else if(i == 0){ //兄进程
         close(fd[0]);

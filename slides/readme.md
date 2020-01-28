@@ -592,9 +592,35 @@ ulimit -a 可以查pipe缓冲区大小(pipe size)
 
 利用fpathconf函数，借助参数选项来查看
 
+- demo:
+
+ls-wc-l.c
+
+pipe_bro.c
+
 ## FIFO
+
+无血缘关系进程间通信
 
 ## 文件进程间通信
 
+## 存储映射IO
 
- 
+
+## mmap
+
+void* mmap(void *addr, size_t len, int prot, int flags, int fd,off_t offset);
+
+作用： 创建共享内存映射
+
+参数：
+    addr: 指定映射区的首地址，通常传NULL，表示让系统自动分配
+    len: 共享内存映射区的大小, (<=文件的实际大小>)
+    prot: 共享内存映射区的读写属性。PROT_READ/PORT_WRITE
+    flags:标注共享内存的共享属性。MAP_SHARED/MAP_PRIVATE(shared修改可以反映到磁盘上)
+    fd: 用于创建共享内存映射区的那个文件的文件描述符
+    offset: 默认0，表示映射文件全部。偏移位置。4k的整数倍
+
+返回值：
+    成功：映射区的首地址
+    失败：MAP_FAILED, errno
