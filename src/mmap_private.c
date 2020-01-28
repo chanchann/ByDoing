@@ -5,14 +5,10 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 /*
-对mem越界操作会怎么样
-
-也就是对p进行越界操作
-
-p+len+1 yes
-p+len+10 yes
-p+len+4096 yes
-p+len+4096*4 段错误 （思考这种情况是为什么
+如果mem++,munmap可否成功
+munmap error: Invalid argument
+你munmap释放的地址必须要是mmap申请的地址
+注意++的副作用
 */
 
 void sys_err(const char* str){
@@ -33,13 +29,13 @@ int main(int argc, char** argv)
     int len = lseek(fd, 0, SEEK_END);
     printf("file len = %d\n", len);
     // mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
-    p = mmap(NULL, len, PROT_WRITE, MAP_SHARED, fd, 0);
+    p = mmap(NULL, len, PROT_WRITE, MAP_PRIVATE, fd, 0);
     if(p == MAP_FAILED){
         sys_err("mmap error");
     }
     close(fd); // 创建完映射区即可关闭掉
     //使用p对文件进行读写操作
-    strcpy(p+len+4096*4, "hello mmap");  //看看这里是如何进行对mem的越界操作
+    strcpy(p, "hello mmap");  //看看这里是如何进行对mem++
     printf("----%s\n", p);
 
     int ret = munmap(p, len);
