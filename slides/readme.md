@@ -552,6 +552,8 @@ socket(本地套接字):稳定
 
 ## pipe()
 
+**用于有血缘关系的进程间通信**
+
 创建并打开管道
 
 int pipe(int fd[2])
@@ -600,14 +602,27 @@ pipe_bro.c
 
 ## FIFO
 
+命名管道 mkfifo(指令、函数）
+
 无血缘关系进程间通信
+
+读端: open fifo O_RDONLY
+
+写端: open fifo O_WRONLY
+
+- DEMO 
+
+fifo_r.c
+
+fifo_w.c
 
 ## 文件进程间通信
 
+打开的文件是内核中的一块缓冲区。多个无血缘关系的进程，可以同时访问该文件。
+
 ## 存储映射IO
 
-
-## mmap
+### mmap
 
 void* mmap(void *addr, size_t len, int prot, int flags, int fd,off_t offset);
 
@@ -623,4 +638,47 @@ void* mmap(void *addr, size_t len, int prot, int flags, int fd,off_t offset);
 
 返回值：
     成功：映射区的首地址
-    失败：MAP_FAILED, errno
+    失败：MAP_FAILED((void*)(-1)), errno
+
+
+int munmap(void *addr, size_t len);  // 释放映射区
+
+参数： 
+
+addr: mmap的返回值
+
+## mmap的注意事项****
+
+Thinking: 
+
+1. 可以open的时候O_CREAT一个新文件来创建映射区吗
+
+用于创建映射区的文件大小为0，实际指定非0大小创建映射区，出总线(BUS)错误
+
+2. 用于创建映射区的文件大小为0，实际制定0大小创建映射区，出"无效参数"
+
+3. 如果open时O_RDONLY,mmap时PROT参数指定的是PROT_READ|PROT_WRITE会如何
+
+无效参数
+
+open 为O_RDONLY, mmap时PROT参数指定的是PROT_READ
+
+如果是段错误，gdb 然后run，停止的地方就是段错误
+
+但是这里我们是bus错误怎么回事？未解决
+
+**创建映射区，需要read权限，mmap需要读写权限，应该<=文件的open权限**
+
+4. 文件描述符先关闭，对mmap映射有没有影响
+
+fd在创建映射区完成即可关闭，后续访问文件用地址访问
+
+5. 如果文件偏移量是1000会如何
+
+offset必须是4096的整数倍，原因与MMU有关，MMU映射的最小单位是4K
+
+（MMU是Memory Management Unit的缩写，中文名是内存管理单元
+
+6. 对mem越界操作会怎么样
+
+也就是对p进行越界操作

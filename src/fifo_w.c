@@ -27,14 +27,14 @@ int main(int argc, char** argv){
         printf("Enter like this: ./a.out fifoname\n");
         return -1;
     }
-    fd = open(argv[1], O_WRONLY);
+    fd = open(argv[1], O_WRONLY);  //打开管道文件
     if(fd < 0){
         sys_err("open");
     }
     i = 0;
     while(1){
         sprintf(buf, "hello itcast %d\n", i++);
-        write(fd, buf, strlen(buf));
+        write(fd, buf, strlen(buf));  //向管道里写数据
         sleep(1);
         if(i > 10){
             break;

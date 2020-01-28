@@ -7,6 +7,9 @@
         "stat.h": "c",
         "types.h": "c",
         "stdio.h": "c",
-        "wait.h": "c"
+        "wait.h": "c",
+        "cstring": "c",
+        "typeinfo": "c",
+        "mman.h": "c"
     }
 }

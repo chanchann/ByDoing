@@ -42,12 +42,12 @@ int main(int argc, char** argv)
         wait(NULL);
     }else if(i == 0){ //兄进程
         close(fd[0]);
-        dup2(fd[1], STDOUT_FILENO);
+        dup2(fd[1], STDOUT_FILENO); //重定向STDOUT
         execlp("ls", "ls", NULL);
         sys_err("exclp ls error");
     }else if(i == 1){ //弟弟
         close(fd[1]);
-        dup2(fd[0], STDIN_FILENO);
+        dup2(fd[0], STDIN_FILENO); //重定向stdin
         execlp("wc", "wc", "-l", NULL);
         sys_err("exclp wc error");
     }

@@ -24,9 +24,11 @@ int main(int argc, char** argv){
         printf("./a.out fifoname\n");
         return -1;
     }
-    fd = open(argv[1], O_RDONLY);
+    // int fd = mkfifo("testfifo", 0644);
+    // open(fd...)
+    fd = open(argv[1], O_RDONLY);  //打开管道文件，也可像上面那样创建后直接传入
     while(1){
-        len = read(fd, buf, sizeof(buf));
+        len = read(fd, buf, sizeof(buf));// 从管道的读端获取数据
         if(len <= 0){
             break;
         }
