@@ -554,6 +554,10 @@ socket(本地套接字):稳定
 
 **用于有血缘关系的进程间通信**
 
+ps aux|grep
+
+ls|wc -l
+
 创建并打开管道
 
 int pipe(int fd[2])
@@ -704,4 +708,57 @@ munmap用于释放的地址一定是mmap申请的地址
 1. fd = open("filename", O_RDWR)
 
 2. mmap(NULL, 有效文件大小, PROT_READ|PROT_WRITE, MAP_SHARED, FD, 0);
+
+## mmap 父子间通信
+
+父进程先创建映射区 open(O_RDWR) mmap()
+
+指定MAP_SHARED 权限
+
+fork()创建子进程
+
+一个进程读，一个进程写
+
+## mmap非血缘关系进程间通信
+
+两个进程打开同一个文件，创建映射区
+
+指定flags为MAP_SHARED
+
+一个进程写入，另一个进程读出
+
+注意：无血缘关系进程间通信：
+
+mmap:数据可以重复读取
+
+fifo:数据只能读一次
+
+## mmap匿名映射区
+
+只能用于学院关系
+
+mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, -1, 0);
+
+对于老的unix系统
+
+/dev/zero -> "\0"
+
+/dev/null 文件黑洞
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
