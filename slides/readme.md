@@ -802,11 +802,163 @@ mmap(NULL, len, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, -1, 0);
 
 kill -9 pid 
 
+kill -9 -pid是kill掉整个组进程
+
 9:SIGKILL
+
+kill -- send signal to a process
 
 int kill(pid_t pid, int sig);
 
-kill -- send signal to a process
+pid: > 0 发哦信号给指定进程
+
+    = 0 发送信号给调用kill函数的那个进程处于同一进程组的进程
+
+    < -1 取绝对值，发送信号给该绝对值所对应的进程组的所有组员
+
+    = -1 发送信号给，有权限发送的所有进程
+
+
+## alarm 
+
+使用的自然计时法
+
+定时发送SIGALRM给当前进程
+
+unsigned alarm(unsigned seconds);
+
+params:
+
+    seconds:定时秒数
+
+return value:
+
+    上次定时剩余时间，无错误现象
+
+每个进程都有且只有一个定时器(多次调用会重置)
+
+time命令查看程序执行时间
+
+time ./alarm (>a.out)
+
+实际执行时间 = 系统时间 + 用户时间 + 等待时间
+
+程序运行的瓶颈在于IO
+
+alarm(0) 取消闹钟
+
+## setitimer
+
+int setitimer(int which, const struct itimerval *restrict value,
+    struct itimerval *restrict ovalue);
+
+Parmas:
+
+which: ITIMER_REAL :采样自然计时  --> SIGALRM
+
+       ITIMER_VIRTUA : 用户空间计时 --> SIGVTALRM
+
+       ITIMER_PRO : 采用内核 + 用户空间计时 --> SIGPROF
+
+类型
+
+struct itimerval {
+        struct  timeval it_interval;    /* timer interval 周期定时秒数*/
+        struct  timeval it_value;       /* current value 第一次定时秒数*/
+};
+
+struct timeval {
+    time_t tv_sec;   /* seconds */
+    suseconds_t tv_usec;  /* microseconds */
+}
+
+restrict value: 定时秒数
+
+restrict ovalue: 传出参数，上次定时剩余时间
+
+e.g.
+```c
+struct itimerval new_t;
+struct itimerval old_t;
+new_t.it_interval.tc_sec = 1;
+new_t.it_interval.tv_usec = 0;
+new_t.it_value.tv_sec = 0;
+new_t.it_value.tv_usec = 0;
+setitimer(&new_t, &old_t)
+```
+
+## 其他发信号的几个函数
+
+int raise(int sig);
+
+void abort(void);
+
+## 信号集操作函数
+
+![sig2](../assets/sig2.png)
+
+信号集操作函数：
+
+sigset_t set; 自定义信号集
+
+sigemptyset(sigset_t *set); 清空信号集
+
+sigfillset(sigset_t *set); 全部置1
+
+sigaddset(sigset_t *set, int signum); 将一个信号添加到集合中
+
+sigdelset(sigset_t *set, int signum); 将一个信号从集合中移除
+
+sigismember(const sigset *set, int signum); 判断一个信号是否在集合中，在返回1，不在返回0
+
+## 设置信号屏蔽字和解除屏蔽:
+
+
+int sigprocmask(int how, const sigset_t *restrict set,
+    sigset_t *restrict oset);
+
+params:
+
+how: 
+    SIG_BLOCK 设置阻塞
+
+    SIG_UNBLOCK  取消阻塞
+
+    SIG_SETMASK  用自定义的set替换mask
+
+set:自定义set
+
+oset:旧有的mask
+
+## 查看未决信号集
+
+int sigpending(sigset_t *set);
+
+set:传出的未决信号集
+
+![sig3](../assets/sig3.png)
+
+注意ctrl D不是发信号
+
+## 信号捕捉
+
+### siganl 
+
+### sigaction 
+
+### 信号捕捉特性
+
+1. 捕捉函数执行期间，信号字由mask -> sa_mask, 捕捉函数执行结束恢复回mask
+
+2. 捕捉函数执行期间，本信号自动被屏蔽(sa_flags = 0)
+
+3. 捕捉函数执行期间,被屏蔽信号多次发送，接触屏蔽后只处理一次(不支持排队)
+
+## 内核实现信号捕捉过程
+
+![sig4](../assets/sig4.png)
+
+## SIGCHILD
 
 
 
