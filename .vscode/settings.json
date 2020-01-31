@@ -10,6 +10,9 @@
         "wait.h": "c",
         "cstring": "c",
         "typeinfo": "c",
-        "mman.h": "c"
+        "mman.h": "c",
+        "__tree": "c",
+        "bitset": "c",
+        "set": "c"
     }
 }
