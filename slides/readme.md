@@ -985,7 +985,20 @@ session.c
 6. 守护进程 业务逻辑 while()
 
 
+## 三级映射
 
+![3map](../assets/3map.png)
+
+
+## 线程
+
+进程： 有独立的 进程地址空间，有独立的pcb ，分配资源的最小单位
+
+线程: 有独立的pcb， 没有独立的进程地址空间
+
+![thread1](../assets/thread1.png)
+
+ps -Lf pid   ----> 线程号 LWP ---> cpu执行的最小单位
 
 
 

@@ -4,7 +4,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-
+/*
+守护进程deamon
+*/
 void sys_err(const char* str){
     perror(str);
     exit(1);
