@@ -1012,10 +1012,44 @@ ps -Lf pid   ----> 线程号 LWP ---> cpu执行的最小单位
 
 LWP 标识线程身份给cpu用的
 
+## 线程控制原语
 
+pthread_t pthread_self(void); 
 
+获取线程id，线程id是进程地址空间内部，用来标识线程身份的id号
 
+返回值: 本线程id
 
+--------------------------
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+         void *(*start_routine)(void *), void *arg);
+
+params:
+
+参1：传出参数，表新创建的子线程id
+
+参2：线程属性，传NULL表使用默认属性
+
+参3：子线程回调函数。创建成功，pthread_create函数返回时，该回调函数自动调用
+
+参4：参3的参数，无的话传NULL
+
+返回：成功 0 失败 errno
+
+### 循环创建多个子线程
+
+--------------------------
+
+void pthread_exit(void *retval);
+
+retval : 退出值， 无退出值时，NULL
+
+exit() 退出当前进程
+
+return 返回到调用者
+
+pthread_exit()  退出当前线程
 
 
 
