@@ -13,6 +13,7 @@
         "mman.h": "c",
         "__tree": "c",
         "bitset": "c",
-        "set": "c"
+        "set": "c",
+        "pthread.h": "c"
     }
 }
