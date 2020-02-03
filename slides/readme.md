@@ -1066,3 +1066,50 @@ int pthread_cancel(pthread_t thread);
 我们可以在程序中，手动添加一个取消点，使用**pthread_testcancel()**
 
 成功被pthread_cancel()杀死的线程，返回-1,使用pthread_join回收
+
+--------------------------
+
+int pthread_detach(pthread_t thread);
+
+detach a thread 设置线程分离
+
+检查出错返回：
+
+**一定记住，在线程中不要用perror**
+
+**用fprintf(stderr,"xxxx:%s\n", strerror(ret));**
+
+### 线程与进程原语对比
+
+线程控制原语 ------------------进程控制原语
+
+pthread_create()  -----------fork()
+
+pthread_self()    -----------getpid()
+
+pthread_exit()     ----------exit()
+
+pthread_join      -----------wait()/waitpid()
+
+pthread_cancel   ------------kill()
+
+pthread_detach
+
+## 线程属性设置
+
+设置分离属性，
+
+pthread_attr_t attr;   创建一个线程属性结构体变量
+
+pthread_attr_init(&attr);
+
+// set
+
+pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+// create
+
+pthread_create(&tid, &attr, tfn, NULL);
+
+pthread_attr_destroy(&attr);
+
