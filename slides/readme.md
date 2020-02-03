@@ -1051,9 +1051,18 @@ return 返回到调用者
 
 pthread_exit()  退出当前线程
 
+--------------------------
 
+pthread_join : wait for thread termination
 
+--------------------------
 
+int pthread_cancel(pthread_t thread); 
 
+杀死一个线程，需要到达一个取消点(保存点)
 
+如果子线程没遇到到达保存点，pthread_cancel无效
 
+我们可以在程序中，手动添加一个取消点，使用**pthread_testcancel()**
+
+成功被pthread_cancel()杀死的线程，返回-1,使用pthread_join回收
