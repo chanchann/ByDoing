@@ -1199,9 +1199,8 @@ pthread_cond_t cond;
 
 2. pthread_cond_t cond = PTHREAD_COND_INITIALIZER; 静态初始化
 
+![cond1](../assets/cond1.png)
 
+## 生产者和消费者模型
 
-
-
-
-
+![product1](../assets/product1.png)
