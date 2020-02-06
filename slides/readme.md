@@ -1163,11 +1163,41 @@ try锁， 尝试加锁，成功--， 失败，返回，同时设置错误号为E
 
 ![sisuo](../assets/sisuo.png)
 
+## 读写锁
 
+1. 读共享，写独占
 
+2. 写锁优先级高
 
+3. 锁只有一把，以读方式给数据加锁 -- 读锁 ， 写同理
 
+![rwlock](../assets/rwlock.png)
 
+相较于互斥量而言，当读线程多时，提高访问效率
+
+pthread_rwlock_t rwlock;
+
+pthread_rwlock_init(&rwlock, NULL);
+
+pthread_rwlock_rdlock(&rwlock);  try版本
+
+pthread_rwlock_wrlock(&rwlock);  try版本
+
+pthread_rwlock_unlock(&rwlock);
+
+pthread_rwlock_detroy(&rwlock);
+
+## 条件变量
+
+本身不是锁，但是通常结合锁来使用, mutex
+
+pthread_cond_t cond;
+
+初始化条件变量:
+
+1. pthread_cond_init(&cond, NULL);  动态初始化
+
+2. pthread_cond_t cond = PTHREAD_COND_INITIALIZER; 静态初始化
 
 
 
