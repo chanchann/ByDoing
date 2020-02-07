@@ -1204,3 +1204,35 @@ pthread_cond_t cond;
 ## 生产者和消费者模型
 
 ![product1](../assets/product1.png)
+
+
+## 信号量
+
+用于线程，进程间同步
+
+相当于 初始化为N的互斥量 ， N值可以同时访问共享数据区的线程数
+
+函数:
+
+sem_t sem; 定义类型
+
+int sem_init(sem_t *sem, int pshared, unsigned int value);
+
+参数:
+
+sem: 信号量
+
+pshared: 0 : 用于线程间同步 
+
+        non-zero: 用于进程间同步
+        
+        value: N值，指定同时访问的线程数
+
+sem_destroy()
+
+sem_wait()   一次调用，做一次 -- 操作，当信号量为0时，再次 -- 就会阻塞，(对比 pthread_mutex_lock)
+
+sem_post()  一次调用，做一次 ++ 操作，当信号量为N时，再次 ++ 就会阻塞(对比pthread_mutex_unlock)
+
+![sem1](../assets/sem1.png)
+
