@@ -5,8 +5,14 @@
 #include <fcntl.h>
 #include <pthread.h>
 /*
+pthread_create : create a new thread
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                          void *(*start_routine) (void *), void *arg);
+
 pthread_self : get the calling thread's ID
- pthread_create : create a new thread
+pthread_t pthread_self(void);
+
+思考 : pthread_self获得的tid和pthread_create得到的tid是否一致
 */
 
 void sys_err(const char* str){
@@ -35,5 +41,6 @@ int main(int argc, char** argv)
     }
     sleep(1); //如果直接return 0 ,空间销毁了之后，线程是共享空间的，所以无法打印
     //这用原始的方法留够时间给子线程打印
+    // 更好的办法 : exit
     return 0;
 }

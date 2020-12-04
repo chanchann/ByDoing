@@ -1063,7 +1063,8 @@ int pthread_cancel(pthread_t thread);
 
 如果子线程没遇到到达保存点，pthread_cancel无效
 
-我们可以在程序中，手动添加一个取消点，使用**pthread_testcancel()**
+我们可以在程序中，手动添加一个取消点，使用
+**pthread_testcancel()**
 
 成功被pthread_cancel()杀死的线程，返回-1,使用pthread_join回收
 
