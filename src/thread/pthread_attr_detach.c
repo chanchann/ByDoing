@@ -36,6 +36,8 @@ int main(int argc, char** argv)
         fprintf(stderr, "pthread_create error : %s\n", strerror(ret));
         exit(1);
     }
+
+    
     // 对应init -> attr_destroy
     // 属性用完了就可以马上销毁了
     ret = pthread_attr_destroy(&attr);
