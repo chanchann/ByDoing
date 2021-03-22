@@ -9,12 +9,12 @@ int main(){
     char msg[] = "It's a test for lseek\n";
     char ch;
     
-    fd = open("../data/lseek.txt", O_RDWR|O_CREAT, 0644);
+    fd = open("../../data/lseek.txt", O_RDWR|O_CREAT|O_APPEND, 0644);
     if(fd < 0){
         perror("open lseek.txt error");
         exit(1);
     }
-    //使用df对打开的文件进行写操作，文件读写的位置位于文件的结尾处
+    //使用O_APPEND对打开的文件进行写操作，文件读写的位置位于文件的结尾处
     write(fd, msg, strlen(msg));  
     
     //修改文件读写指针位置，位于文开开头
