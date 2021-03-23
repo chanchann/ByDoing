@@ -1,7 +1,8 @@
 ## Learning By Doing!!! 
 
 * System Programming:
-  * [Linux Programming](./LinuxProgramming/docs/readme.md)
+  * [文件系统](./LinuxProgramming/docs/01_file.md)
+  * [进程](./LinuxProgramming/docs/02_process.md)
 * 操作系统实验(HIT):
   * [系统调用](./OS/docs/01_syscall.md)
 * HTTP 
@@ -13,4 +14,5 @@
   * [域名系统](./http/docs/06_name_server.md)
   * [实验环境](./http/docs/07_env.md)
 * CPP重点
-  * [move/forward](./cpp/docs/01_history.md)
+  * [move/forward](./cpp/docs/move.md)
+  * [智能指针的实现](./cpp/docs/smartPtr.md)
