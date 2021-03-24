@@ -6,7 +6,7 @@
 
 复杂但有层次
 
-![](../assets/tcpIp4layer.jpeg)
+![tcp4 layer](../assets/tcpIp4layer.jpeg)
 
 ## IP协议
 
@@ -42,9 +42,9 @@ SSL (Secure Socket Layer)  -- 后改名 TLS (Transport Layer Security)
 
 请求方和应答方的中转站，既可以转发客户端的请求，也可以转发服务器的应答
 
-1. 匿名应答
+1. 匿名代理
 
-2. 透明应答
+2. 透明代理
 
 3. 正向代理
 

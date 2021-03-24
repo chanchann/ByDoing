@@ -5,6 +5,7 @@
   * [进程](./LinuxProgramming/docs/02_process.md)
 * 操作系统实验(HIT):
   * [系统调用](./OS/docs/01_syscall.md)
+  * [进程](./OS/docs/02_process.md)
 * HTTP 
   * [HTTP历史](./http/docs/01_history.md)
   * [什么是HTTP](./http/docs/02_what_is_http.md)
