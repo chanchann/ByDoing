@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#define PATH_LEN 256    
+#define PATH_LEN 1024  
 /*
 实现递归遍历目录 ls -R
 1. 判断命令行参数，获取用户要查询的目录名 argv[1]
@@ -36,13 +36,14 @@ void fetchdir(const char* dir, void (*fcn)(char*)) {
         // 防止出现无限递归
         if(strcmp(sdp->d_name, ".") == 0 || strcmp(sdp->d_name, "..") == 0)
             continue;
+        if(strlen(dir) + strlen(sdp->d_name) + 2 > sizeof(name)){
+            fprintf(stderr, "fetchdir:name %s %s too long\n", dir, sdp->d_name);
+        }else{
+            sprintf(name, "%s/%s", dir, sdp->d_name);
+            (*fcn)(name); //回调函数当参数传入
+        }
     }
-    if(strlen(dir) + strlen(sdp->d_name) + 2 > sizeof(name)){
-        fprintf(stderr, "fetchdir:name %s %s too long\n", dir, sdp->d_name);
-    }else{
-        sprintf(name, "%s/%s", dir, sdp->d_name);
-        (*fcn)(name); //What's this? 回调函数当参数传入
-    }
+
 
 }
 

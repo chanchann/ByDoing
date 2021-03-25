@@ -8,6 +8,7 @@
 /*
 dup2的demo
 dup2是把4的指针指向了3的文件
+newfd -> oldfd
 所以这里我们写fd2，实际改变了old而没有改变new那个文件的内容
 */
 int main(int argc, char** argv)

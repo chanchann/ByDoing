@@ -9,13 +9,13 @@
 int main(int argc, char** argv)
 {   
     //需要一个oldfd
-    int fd = open(argv[1], O_RDONLY);
+    int fd = open(argv[1], O_RDONLY);   // 012 --- 3 
     if(fd == -1){
         perror("open error");
         exit(1);
     }
     //返回一个newfd
-    int newfd = dup(fd);
+    int newfd = dup(fd);  // 4 指向3所指向的file结构体
     printf("newfd = %d\n", newfd);
     return 0;
 }

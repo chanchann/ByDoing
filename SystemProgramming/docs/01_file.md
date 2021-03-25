@@ -295,7 +295,9 @@ struct dirent* readdir(DIR* dp)
 
 实现递归遍历目录 ls -R
 
+[ls递归1](../src/file/20_ls_R.c)
 
+[ls递归2](../src/file/21_ls-R_simple.c)
 
 ## dup / dup2
 
@@ -307,10 +309,21 @@ cat ls.c >> out 追加
 
 dup 文件描述符复制
 
+[dup demo](../src/file/22_dup.c)
+
 dup2 文件描述符复制，重定向
+
+[dup2 demo](../src/file/23_dup2.c)
+
+dup和dup2都可用来复制一个现存的文件描述符，使两个文件描述符指向同一个file结
+构体。如果两个文件描述符指向同一个file结构体，File Status Flag和读写位置只保存一份在file结构体中，并且file结构体的引用计数是2。如果两次open同一文件得到两个文件
+描述符，则每个描述符对应一个不同的file结构体，可以有不同的File Status Flag和读写
+位置
 
 ## fcntl实现dup
 
 参3：传入被占用的，返回最小可用的
 
     未被占用的，返回该值的文件描述符
+
+[fcntl实现dup](../src/file/24_fcntl_dup.c)

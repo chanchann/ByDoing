@@ -15,7 +15,7 @@ void isFile(char* name);
 //打开目录，读取，处理目录
 void read_dir(char* dir, void (*func)(char*)){
     DIR* dp;
-    char path[256];
+    char path[512];
     struct dirent* sdp;
     dp = opendir(dir);
     if(dp == NULL){
@@ -51,7 +51,7 @@ void isFile(char* name){
         read_dir(name, isFile);
     }
     //是普通文件，显示名字/大小
-    printf("%10s\t\t%lld\n", name, sb.st_size);
+    printf("%10s\t\t%ld\n", name, sb.st_size);
     return;
 }
 int main(int argc, char** argv)

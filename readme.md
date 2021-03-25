@@ -17,3 +17,5 @@
 * CPP重点
   * [move/forward](./cpp/docs/move.md)
   * [智能指针的实现](./cpp/docs/smartPtr.md)
+* 算法的应用
+  * [排序](./algApp/docs/sort.md)
