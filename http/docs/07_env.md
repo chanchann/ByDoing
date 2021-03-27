@@ -41,3 +41,39 @@ https://moonbingbing.gitbooks.io/openresty-best-practices/content/
 
 https://blog.csdn.net/qq_35246620/article/details/66970211
 
+## 测试环境
+
+```bash
+cd http_study/www/
+./run.sh start
+```
+
+![wireshark](../assets/001_wireshark.png)
+
+然后filter选择“HTTP TCP port(80)", 只抓取http相关数据包，loopback 在本地
+
+浏览器输入http://localhost/
+
+然后403 forbidden,原因还是没有html/index.html访问权限
+
+解决: 
+
+ls -al html 得到user和group
+
+我的是frank和staff
+
+然后在conf/nginx.conf文件顶部添加
+
+user frank staff;
+
+再次启动openrestry
+
+然后查看到wireshark已经抓取
+
+注意记住stop服务器
+
+## 
+
+linux上可以curl发送测试命令，tcpdump抓包
+
+

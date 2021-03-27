@@ -6,11 +6,23 @@
 
 进程:运行起来的程序，占用内存，cpu等系统资源
 
-MMU : 虚拟内存映射单元
+2^32 = 4G 最大可用范围是4G
+
+2^64 = ?
+
+MMU : 虚拟内存映射单元  4KB
 
 ![mmu1](../assets/mmu1.png)
 
 ![mmu2](../assets/mmu2.png)
+
+两个进程内都有一个int a,虚拟地址相同，但是通过MMU映射到不同的物理内存上，就避免了修改A进程导致B进程数据被修改
+
+如果有一个arr[100000],没这么大的连续空间，可以在虚拟内存内连续，而映射到物理内存就是离散的
+
+内核是操作系统，当前只有操作系统，只有一份内核，所以两个进程的内核映射到同一片物理内存
+
+CPU将内存空间分0和3级两个级别
 
 ## pcb
 
@@ -18,9 +30,11 @@ MMU : 虚拟内存映射单元
 
 struct task_struct
 
-PCB进程控制块：
+https://elixir.bootlin.com/linux/latest/source/include/linux/sched.h
 
-进程ID
+PCB进程控制块 主要成员：
+
+进程ID (ps aux, 唯一)
 
 文件描述符表
 
@@ -33,6 +47,8 @@ umask
 信号相关信息资源
 
 用户ID和组id
+
+hint: 挂起，等待除了cpu以外的其他资源，主动放弃CPU
 
 ## 环境变量
 
@@ -60,6 +76,8 @@ env 查看所有的环境变量
 
 创建子进程
 
+[fork](../src/process/01_fork.c)
+
 父子进程格子返回，父进程返回子进程pid,子进程返回0
 
 ## getpid() / getppid();
@@ -69,6 +87,8 @@ env 查看所有的环境变量
 ## 循环共享
 
 循环创建n个子进程
+
+[loop fork](../src/process/02_loop_fork.c)
 
 ## 进程共享
 
@@ -80,7 +100,7 @@ env 查看所有的环境变量
 
 - 不同
 
-进程id，返回值，各自的父进程，进程创建的时间，闹钟，未决信号集
+进程id，返回值，各自的父进程id，进程运行的时间，闹钟(定时器)，未决信号集
 
 ## 
 
@@ -92,20 +112,37 @@ env 查看所有的环境变量
 
 2. mmap建立的映射区(进程间通信详解)
 
-
 特别的，fork之后父进程先执行还是子进程先执行不确定。取决于内核所使用的调度算法
 
 ## GDB专题(待)
 
 ## exec函数族
 
-就是使进程执行某一程序，成功无返回值，失败返回-1
+用fork创建子进程后执行的是和父进程相同的程序（但有可能执行不同的代码分支），
+子进程往往要调用一种exec函数以执行另一个程序。当进程调用一种exec函数时，该进程的
+用户空间代码和数据完全被新程序替换，从新程序的启动例程开始执行。调用exec并不创建
+新进程，所以调用exec前后该进程的id并未改变。
+
+```c
+#include <unistd.h>
+int execl(const char *path, const char *arg, ...);
+int execlp(const char *file, const char *arg, ...);
+int execle(const char *path, const char *arg, ..., char *const envp[]);
+int execv(const char *path, char *const argv[]);
+int execvp(const char *file, char *const argv[]);
+int execve(const char *path, char *const argv[], char *const envp[]);
+```
+
+这些函数如果调用成功则加载新的程序从启动代码开始执行，不再返回，如果调用出错
+则返回-1，所以exec函数只有出错的返回值而没有成功的返回值。
 
 execlp 借助PATH环境变量寻找执行程序
 
 execl 自己指定执行程序路径
 
 execvp ...
+
+，只有execve是真正的系统调用，其它五个函数最终都调用execve
 
 ![exec](../assets/exec.png)
 

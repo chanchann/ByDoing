@@ -4,7 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/types.h>
-
+#include <sys/wait.h>
 /*
 此函数学习
 fork()
@@ -12,8 +12,7 @@ getpid()
 getppid()
 wait()
 */
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     printf("before fork-1-\n");
     printf("before fork-2-\n");
     printf("before fork-3-\n");

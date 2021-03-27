@@ -4,8 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     int fd = open("ps.out", O_WRONLY|O_CREAT|O_TRUNC);
     if(fd < 0){
         perror("open error");
