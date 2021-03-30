@@ -6,6 +6,8 @@
 * 操作系统实验(HIT):
   * [系统调用](./OS/docs/01_syscall.md)
   * [进程](./OS/docs/02_process.md)
+  * [线程](./OS/docs/03_thread.md)
+  * [线程实验](./OS/docs/04_thread_exp.md)
 * HTTP 
   * [HTTP历史](./http/docs/01_history.md)
   * [什么是HTTP](./http/docs/02_what_is_http.md)
@@ -18,6 +20,9 @@
   * [HTTP报文](./http/docs/09_protocal.md)
   * [处理请求](./http/docs/10_process_req.md)
   * [URI](./http/docs/11_uri.md)
+  * [状态码](./http/docs/12_status_code.md)
+  * [HTTP特点](./http/docs/13_feature.md)
+  * [HTTP实体](./http/docs/15_body.md)
 * CPP重点
   * [move/forward](./cpp/docs/move.md)
   * [智能指针的实现](./cpp/docs/smartPtr.md)

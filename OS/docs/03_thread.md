@@ -281,3 +281,56 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 }
 
 ```
+
+## 如何执行我们想要的代码?
+
+```
+int main(int argc, char * argv[])
+{ while(1) { scanf("%s", cmd);
+if(!fork()) {exec(cmd);} wait(0); }
+// shell执行子进程指令
+```
+
+子进程进入A ，父进程等待…
+故事要从exec 这个系统调用开始
+
+```
+_system_call:
+push %ds .. %fs
+pushl %edx..
+call sys_execve
+```
+
+```
+_sys_execve:
+# 比如我们执行ls 他有个入口.entry
+# 我们的子线程去执行他，就是靠我们的EIP指向这里
+# iret的时候便跳转
+lea EIP(%esp),%eax
+pushl %eax  # _do_execve的参数，所以push stack
+call _do_execve
+```
+
+```
+# 28地址
+EIP = 0x1C
+```
+
+![EIP](./assets/16_exec.png)
+
+```
+int do_execve( * eip,...
+{     
+    p += change_ldt(...; 
+　　eip[0] = ex.a_entry;  # entry 赋给eip,iret时直接到转到这个entry
+　　eip[3] = p; ...  ## ss:sp
+```
+
+```
+# 如何知道entry的呢
+# "ls"是个文件，读进来的时候有个文件头
+# 链接的时候写进来
+struct exec {
+unsigned long a_magic;
+unsigned a_entry; };
+```

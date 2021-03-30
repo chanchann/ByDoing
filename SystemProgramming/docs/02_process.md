@@ -136,9 +136,21 @@ int execve(const char *path, char *const argv[], char *const envp[]);
 这些函数如果调用成功则加载新的程序从启动代码开始执行，不再返回，如果调用出错
 则返回-1，所以exec函数只有出错的返回值而没有成功的返回值。
 
-execlp 借助PATH环境变量寻找执行程序
+```
+execlp 
+
+p是借助PATH环境变量寻找执行程序
+
+该函数通常用来调用系统程序，如ls, date, cp, cat ...
+```
+
+[execlp](../src/process/05_fork_execlp
+.c)
 
 execl 自己指定执行程序路径
+
+[execl](../src/process/04_fork_execl
+.c)
 
 execvp ...
 
@@ -158,15 +170,23 @@ ps aux
 
 ps ajx
 
+[孤儿进程](../src/process/06_orphan.c)
+
+用kill -9 杀掉
+
 ## 僵尸进程
 
 进程终止，父进程尚未回收，子进程残留资源(PCB)存放在内核中，变成僵尸进程
 
-特别注意，不能用kill清楚，kill命令只能用来终止进程，而僵尸进程以及停止。
+特别注意，不能用kill清除，kill命令只能用来终止进程，而僵尸进程已经停止。
+
+```[zoom] <defunct>```
 
 Thinking:如何可清除僵尸进程？
 
 杀死他的父亲
+
+[僵尸进程](../src/process/07_zoom.c)
 
 ## wait()
 
