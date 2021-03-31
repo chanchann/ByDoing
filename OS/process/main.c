@@ -36,8 +36,8 @@ static inline _syscall0(int,sync)
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-
 #include <linux/fs.h>
+
 
 static char printbuf[1024];
 
@@ -135,6 +135,18 @@ void main(void)		/* This really IS void, no error here. */
 	floppy_init();
 	sti();
 	move_to_user_mode();
+
+	/***************添加开始***************/
+	setup((void *) &drive_info);
+	// 建立文件描述符0和/dev/tty0的关联
+	(void) open("/dev/tty0",O_RDWR,0);
+	//文件描述符1也和/dev/tty0关联
+	(void) dup(0);
+	// 文件描述符2也和/dev/tty0关联
+	(void) dup(0);
+	(void) open("/var/process.log",O_CREAT|O_TRUNC|O_WRONLY,0666);
+	/***************添加结束***************/
+
 	if (!fork()) {		/* we count on this going ok */
 		init();
 	}
@@ -168,14 +180,10 @@ static char * envp[] = { "HOME=/usr/root", NULL };
 void init(void)
 {
 	int pid,i;
-	// 加载文件系统
-	setup((void *) &drive_info);
-	// 打开/dev/tty0，建立文件描述符0和/dev/tty0的关联
-	(void) open("/dev/tty0",O_RDWR,0);
-	// 让文件描述符1也和/dev/tty0关联
-	(void) dup(0);
-	// 让文件描述符2也和/dev/tty0关联
-	(void) dup(0);
+
+	/*
+	 * remove some code
+	 */
 	printf("%d buffers = %d bytes buffer space\n\r",NR_BUFFERS,
 		NR_BUFFERS*BLOCK_SIZE);
 	printf("Free mem: %d bytes\n\r",memory_end-main_memory_start);

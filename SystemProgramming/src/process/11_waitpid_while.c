@@ -4,8 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     int i;
     pid_t pid, wpid;
     for(i = 0; i < 5; i++){

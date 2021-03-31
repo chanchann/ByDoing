@@ -190,6 +190,8 @@ Thinking:如何可清除僵尸进程？
 
 ## wait()
 
+[wait](../src/process/08_zoom_wait.c)
+
 pid_t wait(int* status)
 
 参数： (传出)回收进程的状态
@@ -208,7 +210,7 @@ WIFEXITED(status) --> 为真 --> 调用WEXUTSTATUS(status) --> 得到子进程�
 
 WIFSIGNALED(status) --> 为真 --> 调用WTERMSIG(status) --> 得到导致子进程异常终止的信号编号
 
-父进程调用wait函数可以回收子进程终止信息。改函数有三个功能
+父进程调用wait函数可以回收子进程终止信息。该函数有三个功能
 
 1. 阻塞等待子进程退出
 
@@ -236,7 +238,6 @@ pid：指定回收的子进程pid
 
 < -1 回收指定进程组内的任意子进程
 
-
 status （传出）回收进程的状态
 
 options WNOHANG 指定回收方式为非阻塞
@@ -256,19 +257,3 @@ return value:
 想回收多个，while
 
 waitpid(-1, &status, 0) == wait(&status)
-
-## 进程之间通信
-
-InterProcess Communication
-
-![IPC](../assets/ipc.png)
-
-进程间通信常用方式
-
-管道：简单
-
-信号：开销小
-
-mmap映射：非血缘关系进程间
-
-socket(本地套接字):稳定

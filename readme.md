@@ -3,6 +3,7 @@
 * System Programming:
   * [文件系统](./LinuxProgramming/docs/01_file.md)
   * [进程](./LinuxProgramming/docs/02_process.md)
+  * [进程间通信](./LinuxProgramming/docs/03_process_communication.md)
 * 操作系统实验(HIT):
   * [系统调用](./OS/docs/01_syscall.md)
   * [进程](./OS/docs/02_process.md)
@@ -26,6 +27,7 @@
 * CPP重点
   * [move/forward](./cpp/docs/move.md)
   * [智能指针的实现](./cpp/docs/smartPtr.md)
+  * [C++内存读写重排](./cpp/docs/memory.md)
 * 算法的应用
   * [排序](./algApp/docs/sort.md)
 * 网络编程
