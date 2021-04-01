@@ -1,5 +1,19 @@
 ## memory ordering
 
+## 为什么需要memory order
+
+如果不使用任何同步机制（例如 mutex 或 atomic），在多线程中读写同一个变量，那么，程序的结果是难以预料的。
+
+简单来说，编译器以及 CPU 的一些行为，会影响到程序的执行结果：
+
+1. 即使是简单的语句，C++ 也不保证是原子操作。
+
+2. CPU 可能会调整指令的执行顺序。
+
+3. 在 CPU cache 的影响下，一个 CPU 执行了某个指令，不会立即被其它 CPU 看见。
+
+
+
 read - write
 
 在单线程中，看起来是个串行的操作，在多线程情况下，
@@ -190,6 +204,14 @@ release保证之前，acquire保证之后
 dvalue不是一个原子型操作，但是我们要先写dvalue才会去写ivalue,然后读到ivalue才会去读dvalue,所以我们保证了ivalue的顺序，从而保证了dvalue的顺序, 3在2之后，那么4必然在1之后
 
 再次理解: Release -- acquire
+
+来自不同线程的两个原子操作顺序不一定？那怎么能限制一下它们的顺序？这就需要两个线程进行一下同步（synchronize-with）。同步什么呢？同步对一个变量的读写操作。
+
+线程 A 原子性地把值写入 x (release), 然后线程 B 原子性地读取 x 的值（acquire）. 这样线程 B 保证读取到 x 的最新值
+
+带来牛逼的副作用：线程 A 中所有发生在 release x 之前的写操作，对在线程 B acquire x 之后的任何读操作都可见！本来 A, B 间读写操作顺序不定。这么一同步，在 x 这个点前后， A, B 线程之间有了个顺序关系，称作 inter-thread happens-before.
+
+
 
 
 
