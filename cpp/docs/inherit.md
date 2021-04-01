@@ -180,3 +180,5 @@ int main() {
 // this address = 0x7fff174de140
 // Derived Addr = 0x7fff174de140
 ```
+
+[代码](../inherit/memFunc.cc)

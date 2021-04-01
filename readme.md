@@ -30,6 +30,7 @@
   * [move/forward](./cpp/docs/move.md)
   * [智能指针的实现](./cpp/docs/smartPtr.md)
   * [C++内存读写重排](./cpp/docs/memory.md)
+  * [C++继承中，子类如何找到父类函数](./cpp/docs/inherit.md)
 * 算法的应用
   * [排序](./algApp/docs/sort.md)
 * 网络编程
