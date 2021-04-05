@@ -70,4 +70,7 @@ TARGET_LINK_LIBRARIES( 05_sync_handler_mutlti LINK_PUBLIC ${Boost_LIBRARIES} )
 ADD_EXECUTABLE( 06_sync_tcpServ 06_sync_tcpServ.cc )
 TARGET_LINK_LIBRARIES( 06_sync_tcpServ LINK_PUBLIC ${Boost_LIBRARIES} )
 
+ADD_EXECUTABLE( 07_echo_server_async 07_echo_server_async.cc )
+TARGET_LINK_LIBRARIES( 07_echo_server_async LINK_PUBLIC ${Boost_LIBRARIES} )
+
 
