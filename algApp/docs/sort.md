@@ -7,7 +7,6 @@
 桶 计数 基数  o(n) 不是基于比较
 
 
-
 ## 如何分析一个“排序算法”？
 
 - 排序算法的执行效率
@@ -192,11 +191,183 @@ todo
 
 归并排序和快速排序都用到了分治思想，
 
-## Q 如何用快排思想在O(n)内查找第K大元素？
-
 ## 归并排序（Merge Sort）
 
 先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。
 
 
+```cpp 
+template<typename T> 
+void merge(vector<T>& arr, int left, int mid, int right) {
+    vector<T> tmp(right-left);
+    int i = left, j = mid, k = 0;
+    while(i < mid && j < right) {
+        if(arr[i] <= arr[j]) {
+            tmp[k++] = arr[i++];
+        } else {
+            tmp[k++] = arr[j++];
+        }
+    }
+    // 判断哪个数组还有剩余
+    int start = i, end = mid;
+    if(j < right) {
+        start = j;
+        end = right;
+    }
+    while(start < right) {
+        tmp[k++] = arr[start++];
+    }
+    // tmp 拷贝回A[left...right]
+    for(int i = 0; i < right-left; i++) {
+        arr[left+i] = tmp[i];
+    }
+}
+
+template<typename T> 
+void mergeHelper(vector<T>& arr, int left, int right) {
+    if(left >= right-1) return;  // 1个的时候
+    int mid = left + (right-left+1)/2;
+    mergeHelper(arr, left, mid);
+    mergeHelper(arr, mid, right);
+    merge(arr, left, mid, right);
+}
+
+
+template<typename T> 
+void merge_sort(vector<T>& arr) {
+    mergeHelper(arr, 0, arr.size());
+}
+```
+
+## Q1 归并排序是稳定的排序算法吗？
+
+是
+
+归并排序稳不稳定关键要看 merge() 函数
+
+把 A[left...right]中的元素放入 tmp 数组。这样就保证了值相同的元素，在合并前后的先后顺序不变
+
+## Q2 : 时间复杂度
+
+O(nlogn)
+
+假设对 n 个元素进行归并排序需要的时间是 T(n)，那分解成两个子数组排序的时间都是 T(n/2)。
+
+merge() 函数合并两个有序子数组的时间复杂度是 O(n)
+
+```
+T(1) = C; // n=1时，只需要常量级的执行时间，所以表示为C。
+
+T(n) = 2*T(n/2) + n； n>1
+
+
+T(n) = 2*T(n/2) + n
+     = 2*(2*T(n/4) + n/2) + n = 4*T(n/4) + 2*n
+     = 4*(2*T(n/8) + n/4) + 2*n = 8*T(n/8) + 3*n
+     = 8*(2*T(n/16) + n/8) + 3*n = 16*T(n/16) + 4*n
+     ......
+     = 2^k * T(n/2^k) + k * n
+     ......
+
+// 当 T(n/2^k)=T(1) 时，也就是 n/2^k=1
+// k=log2n
+// T(n) = 2log2n * C + n * log2n
+```
+
+归并排序的执行效率与要排序的原始数组的有序程度无关，所以其时间复杂度是非常稳定的，不管是最好情况、最坏情况，还是平均情况，时间复杂度都是 O(nlogn)。
+
+## 弱点 : 空间复杂度
+
+空间复杂度是 O(n)。
+
+归并排序不是原地排序算法。
+
+## 快速排序（Quicksort）
+
+我们选择 left 到 right 之间的任意一个数据作为 mid（分区点）。
+
+我们遍历 left 到 right 之间的数据，将小于 mid 的放到左边，将大于 pivot 的放到右边，将 mid 放到中间
+
+根据分治、递归的处理思想，我们可以用递归排序下标从 left 到 mid 之间的数据和下标从 mid 到 right 之间的数据，直到区间缩小为 1，就说明所有的数据都有序了。
+
+```cpp
+template<typename T> 
+void quick_sort(vector<T>& arr) {
+    if(arr.empty()) return;
+    quickHelper(arr, 0, arr.size());
+}
+
+template<typename T> 
+void quickHelper(vector<T>& arr, int left, int right) {
+    if(left >= right-1) return;
+    int mid = partition(arr, left, right); // 获取分区点
+    quickHelper(arr, left, mid);
+    quickHelper(arr, mid+1, right);
+}
+
+template<typename T> 
+int partition(vector<T>& arr, int left, int right) {
+    int midVal = arr[right-1];
+    int i = left;
+    for(int j = left; j < right-1; j++) {
+        if(arr[j] < midVal) {
+            swap(arr[i], arr[j]);
+            i++;
+        }
+    }
+    swap(arr[i], arr[right-1]);
+    return i;
+}
+```
+
+## Q1 : 快速排序是原地排序算法吗？
+
+这里的partition实现是
+
+
+## Q2 : 快速排序是稳定的排序算法吗？
+
+**不是**
+
+比如数组中有两个相同的元素，比如序列 6，8，7，6，3，5，9，4，在经过第一次分区操作之后，两个 6 的相对先后顺序就会改变。
+
+## Q3 : 归并和快排的区别
+
+归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。
+
+归并排序虽然是稳定的、时间复杂度为 O(nlogn) 的排序算法，但是它是非原地排序算法（合并函数无法在原地执行，占用太多内存)
+
+## Q4 快排的性能分析
+
+每次分区操作，都能正好把数组分成大小接近相等的两个小区间，那快排的时间复杂度递推求解公式跟归并是相同的。所以，快排的时间复杂度也是 O(nlogn)
+
+但公式成立的前提是每次分区操作，我们选择的 midVal 都很合适，正好能将大区间对等地一分为二。但实际上这种情况是很难实现的。
+
+T(n) 在大部分情况下的时间复杂度都可以做到 O(nlogn)，只有在极端情况下，才会退化到 O(n2)。也有很多方法将这个概率降到很低
+
+todo : 如何降低概率
+
+## Q 如何用快排思想在O(n)内查找第K大元素？
+
+我们选择数组区间 A[0...n)的最后一个元素 A[n-1]作为 pivot，对数组 A[0...n) 原地分区，这样数组就分成了三部分，A[0...p]、A[p]、A[p+1...n-1]
+
+如果 p+1 == K，那 A[p]就是要求解的元素；如果 K>p+1, 说明第 K 大元素出现在 A[p+1...n) 区间，我们再按照上面的思路递归地在 A[p+1...n) 这个区间内查找。反之同理
+
+第一次分区查找，我们需要对大小为 n 的数组执行分区操作，需要遍历 n 个元素。第二次分区查找，我们只需要对大小为 n/2 的数组执行分区操作，需要遍历 n/2 个元素。依次类推，分区遍历元素的个数分别为、n/2、n/4、n/8、n/16.……直到区间缩小为 1。
+
+所以O(N)
+
+## 线性排序
+
+时间复杂度是 O(n) 的排序算法：桶排序、计数排序、基数排序
+
+都不是基于比较的排序算法，都不涉及元素之间的比较操作。
+
+对要排序的数据要求很苛刻
+
+## 如何根据年龄给 100 万用户排序？
+
+## 桶排序（Bucket sort）
+
+将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。
 

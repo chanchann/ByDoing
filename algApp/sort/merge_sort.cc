@@ -2,7 +2,6 @@
 #include <vector>
 using namespace std;
 
-// 哨兵
 template<typename T> 
 void merge(vector<T>& arr, int left, int mid, int right) {
     vector<T> tmp(right-left);
