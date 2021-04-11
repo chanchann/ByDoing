@@ -9,3 +9,7 @@ https://labs.bilimedtech.com/nasm/index.html#
 https://www.csee.umbc.edu/portal/help/nasm/sample_64.shtml
 
 cheat sheet : https://www.cs.uaf.edu/2017/fall/cs301/reference/x86_64.html
+
+https://soliduscode.blogspot.com/search?q=nasm
+
+https://www.youtube.com/watch?v=faMLkpC8TmA&list=PLF5351B80A7005FA1&index=12

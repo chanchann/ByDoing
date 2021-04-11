@@ -1,3 +1,5 @@
+; gcc -no-pie -o test 04.o
+; https://stackoverflow.com/questions/2463150/what-is-the-fpie-option-for-position-independent-executables-in-gcc-and-ld
 bits 64
 SECTION .data 
 
@@ -7,7 +9,7 @@ msg: db "Hello world, this is asm", 10, 0
 msgLen: equ $-msg  
 fmt: db "Msg length = %d", 10, 0
 
-count dq 120
+count: dq 120
 fmt2: db "Value of myInteger is %d", 10, 0
 
 SECTION .text 
@@ -30,9 +32,9 @@ main:
     call printf wrt ..plt	
 
     lea RDI, [rel fmt2]
-    ; mov RSI, i  ; address
-    mov RSI, count
-    mov al, 0
+    ; mov RSI, count  ; address
+    mov RSI, QWORD [count]
+
     call printf wrt ..plt
 
     leave 
