@@ -32,7 +32,6 @@ mov RBX , [b]
 idiv RBX
 mov RDI, fmt
 mov RSI, division
-
 mov RDX, RAX
 mov RAX , 0
 call printf

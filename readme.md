@@ -11,6 +11,8 @@
   * [线程](./OS/docs/03_thread.md)
   * [线程实验](./OS/docs/04_thread_exp.md)
   * [CPU调度](./OS/docs/06_cpu_sched.md)
+* csapp:
+  * [汇编入门](./csapp/asm/asm.md)
 * HTTP 
   * [HTTP历史](./http/docs/01_history.md)
   * [什么是HTTP](./http/docs/02_what_is_http.md)
@@ -33,6 +35,7 @@
   * [C++继承中，子类如何找到父类函数](./cpp/docs/inherit.md)
 * 算法的应用
   * [排序](./algApp/docs/sort.md)
+  * [堆](./algApp/docs/heap.md)
 * 网络编程
   * [异步](./NetWork/docs/async.md)
   * [阻塞/非阻塞](./NetWork/docs/nonblock.md)

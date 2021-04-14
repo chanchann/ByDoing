@@ -6,7 +6,7 @@ SECTION .data    ; initiaalize data
 msg: db "dazhuzhuzhuzhu , sdadas", 10, 0 ; 10 means \n, 0 measn end; msg means lable -- location
 
 ; SECTION .bss    ; unitialized data
-; https://stackoverflow.com/questions/13091987/x64-nasm-pushing-memory-addresses-onto-the-stack-call-function
+;  
 
 SECTION .text   ; asm code 
 extern printf
