@@ -117,7 +117,7 @@ struct coctx_t {
 // 函数声明
 // rdi寄存器是当前上下文地址，rsi寄存器是目标上下文地址，X64传参机制
 extern "C" {
-	extern void coctx_swap( coctx_t *cur,coctx_t* dst) asm("coctx_swap");
+	extern void coctx_swap( coctx_t *from,coctx_t* to) asm("coctx_swap");
 };
 ```
 
@@ -143,9 +143,13 @@ movq %rax, 104(%rdi)  ; 104/8 = 13, rsp
 
 ```
 
+## 
+
+在进入coctx_swap后，%rdi寄存器已经指向可第一个参数from，%rsi寄存器已经指向可第二个参数to
+
 ```
 #elif defined(__x86_64__)
-	leaq (%rsp), %rax     ; register %rax = %rsp + 0 (address)
+	leaq (%rsp), %rax     ;
     movq %rax, 104(%rdi)  ; 104/8 = 13, rsp 
     movq %rbx, 96(%rdi)   
     movq %rcx, 88(%rdi)
@@ -188,10 +192,93 @@ movq %rax, 104(%rdi)  ; 104/8 = 13, rsp
 	ret
 ```
 
+```
+//片段1主要作用 即要切出协程上下文信息(相关的寄存器数据和栈帧数据)保存到coctx_t* from中
+
+//!!!!!!!!!!!!!!寄存器rdi ==> coctx_t* from  rsi==>- coctx_t* to!!!!!!!!!!!!!!!!
+
+leaq (%rsp),%rax      // 把rsp寄存器中的值存到rax寄存器中(这个值是一个地址也就是一个指针，记为char *addr1后面会用,指向是父函数栈帧栈顶的位置,也就是要切出协程返回的地址ret func addr）
+movq %rax, 104(%rdi)  // rdi寄存器保存第一个参数的地址即from,104(%rdi)即(char*(from) + 13 * sizeof(void*)),即regs[13]，把rax寄存器中的值保存到regs[13]中,这里先把父函数的返回地址保存下来
+movq %rbx, 96(%rdi)   // 把 rbx 寄存器中的值保存到regs[12]中
+movq %rcx, 88(%rdi)   // 把 rcx 寄存器中的值保存到regs[11]中
+movq %rdx, 80(%rdi)   // 把 rdx 寄存器中的值保存到regs[10]中
+movq 0(%rax), %rax    // 0(%rax)即指针解引用上面提到的addr1 *(addr1 + 0)，把rax寄存器指向的内容存到rax寄存器中，即返回函数的地址:ret func addr
+movq %rax, 72(%rdi)   // 把 rax 寄存器中的值(ret func addr)保存到regs[9]中
+movq %rsi, 64(%rdi)   // 把 rsi 寄存器中的值保存到regs[8]中
+movq %rdi, 56(%rdi)   // 把 rdi 寄存器中的值保存到regs[7]中
+movq %rbp, 48(%rdi)   // 把 rbp 寄存器中的值保存到regs[6]中
+movq %r8, 40(%rdi)    // 把 r8  寄存器中的值保存到regs[5]中
+movq %r9, 32(%rdi)    // 把 r9  寄存器中的值保存到regs[4]中
+movq %r12, 24(%rdi)   // 把 r12 寄存器中的值保存到regs[3]中
+movq %r13, 16(%rdi)   // 把 r13 寄存器中的值保存到regs[2]中
+movq %r14, 8(%rdi)    // 把 r14 寄存器中的值保存到regs[1]中
+movq %r15, (%rdi)     // 把 r15 寄存器中的值保存到regs[0]中
+xorq %rax, %rax       // 把 rax 中的值异或rax的值并存到rax寄存器中（其实就是清0 ~^o^~）
+
+//片段2主要作用恢复要切入协程的上下文 把要切入协程栈数据(保存在coctx_t* to中)恢复到寄存器中和切入协程的栈帧中(其实就是把上面的汇编指令操作数交换下位置~^o^~)
+movq 48(%rsi), %rbp    // 把to.regs[6]中的值即*(to.regs[6])(指向要切入协程栈帧的栈底位置，就是栈的起始位置)保存到 rbp 寄存器中（寄存器的功能就是用于标识当前栈帧的起始位置）
+movq 104(%rsi), %rsp   // 把to.regs[13]中的值即*(to.regs[13])(不考虑字节对齐指向 to->ss_sp + to->ss_size - sizeof(void*);!!!!!!为什么指向这里下面解释!!!!!!)保存到rsp 寄存器中
+movq (%rsi), %r15      // 把to.regs[0]中的值即*(to.regs[0])保存到 r15 寄存器中
+movq 8(%rsi), %r14     // 把to.regs[1]中的值即*(to.regs[1])保存到 r14 寄存器中
+movq 16(%rsi), %r13    // 把to.regs[2]中的值即*(to.regs[2])保存到 r13 寄存器中
+movq 24(%rsi), %r12    // 把to.regs[3]中的值即*(to.regs[3])保存到 r12 寄存器中
+movq 32(%rsi), %r9     // 把to.regs[4]中的值即*(to.regs[4])保存到 r9  寄存器中
+movq 40(%rsi), %r8     // 把to.regs[5]中的值即*(to.regs[5])保存到 r8  寄存器中
+movq 56(%rsi), %rdi    // 把to.regs[7]中的值即*(to.regs[7])保存到 rdi 寄存器中
+movq 80(%rsi), %rdx    // 把to.regs[10]中的值即*(to.regs[10])保存到 rdx 寄存器中
+movq 88(%rsi), %rcx    // 把to.regs[11]中的值即*(to.regs[11])保存到 rcx 寄存器中
+movq 96(%rsi), %rbx    // 把to.regs[12]中的值即*(to.regs[12])保存到 rcx 寄存器中
+leaq 8(%rsp), %rsp     // 把 rsp 中的地址向下移动8位，to->ss_sp + to->ss_size - sizeof(void*) + 8(__x86_64__ sizeof(void*) == 8)指向栈顶
+pushq 72(%rsi)         // 把 to.regs[9]中的值入栈(to.regs[9]中此时指向的是要切入协程的执行函数CoRoutineFunc的地址!!!!!为什么指向这个函数下面说!!!!!!),堆栈地址由高到低增长入栈后rsp回到to->ss_sp + to->ss_size）- sizeof(void*)
+
+movq 64(%rsi), %rsi    // 把to.regs[8]中的值即*(to.regs[8])保存到 rsi 寄存器中
+ret                      //ret 语句用来弹出栈的内容，并跳转到弹出的内容表示的地址处,而弹出的内容正好是上面pushq 72(%rsi)的值:CoRoutineFunc的地址,成功进入执行新协程
+```
+
+可以看出，这里通过调整%rsp 的值来恢复新协程的栈，并利用了 ret 语句来实现修改指令寄存器 %rip 的目的，通过修改 %rip 来实现程序运行逻辑跳转。注意%rip 的值不能直接修改，只能通过 call 或 ret 之类的指令来间接修改。整体上看来，协程的切换其实就是cpu 寄存器内容特别是%rip 和 %rsp 的写入和恢复，因为cpu 的寄存器决定了程序从哪里执行（%rip) 和使用哪个地址作为堆栈 （%rsp）
+
+执行完上图的流程，就将之前 cpu 寄存器的值保存到了协程A 的 regs[14] 中，而将协程B regs[14] 的内容写入到了寄存器中，从而使执行逻辑跳转到了 B 协程 regs[14] 中保存的返回地址处开始执行，即实现了协程的切换（从A 协程切换到了B协程执行）
+
+因为我们要从from切换到to中from的信息就是当前函数栈的信息，如果to协程是第一次创建并执行，那么to的信息在进入to之前我们是没有的，所以我们要创建to的堆栈信息，并且创建相关的寄存器信息，当这些信息被恢复到寄存器中可以使cpu真正的跳转到to中去执行。具体的实现在coctx_make中。
+
 ## Context Create
 
 创建上下文中在libco中通过coctx.cpp实现，初始化上下文的栈和跳转点
 
 对应makecontext(ucontext_t *ucp, void (*func)(), int argc, ...)
 
-
+```
+int coctx_make(coctx_t* ctx, coctx_pfn_t pfn, const void* s, const void* s1) {
+  /*ctx->ss_sp 对应的空间是在堆上分配的，地址是从低到高的增长，而堆栈是由高到低增长的
+   *所以要使用这一块人为改变的栈帧区域，首先地址要调到最高位，即ss_sp + ss_size的位置
+   *为什么sp指针要往前移动 sizeof(void*)，空出来sizeof(void*)个位置？(问题1)
+   *这里我看了老半天才看懂〒_〒，下面会回答这个问题
+  */
+  char* sp = ctx->ss_sp + ctx->ss_size - sizeof(void*);
+  /**
+   * -16除符号位的低位是10000，(sp二进制) & 10000会让sp前移动 (16 - (ctx->ss_size % 16))个字节，从而达到 16字节对齐的效果
+   * 注意这里是向前移动而不是向后移动，就是减少多出的内存空间来进行字节对齐
+   */
+  sp = (char*)((unsigned long)sp & -16LL); 
+ 
+  memset(ctx->regs, 0, sizeof(ctx->regs));
+  /**
+   * 看后面有一句ctx->regs[kRSP] = sp 而ctx->regs[kRSP]在进行协切换的时候是会被写入rsp 堆栈指针寄存器中的,所以sp指针本身就代表了rsp 是堆栈指针寄存器的值
+   * void** ret_addr = (void**)(sp); 把(char*sp)强转为(void**) 然后 *ret_addr = (void*)pfn; 这里的目的是把sp转为双层指针即指向指针的指针，然后改指针的
+   * 指针指向的内容为pfn，然后把ctx->regs[kRSP] = sp，当进行协程切换的时候把ctx->regs[kRSP]写入rsp寄存器中，pfn就是我们即将切入的协程调用函数，
+   * 然后说刚开始的问题
+   */
+  /*
+   *(问题1)回答:*ret_addr = (void*)pfn;这里我们要在栈的末尾保存pfn的指针，需要sizeof(void*)大小的空间，所以sp要向前移动空出空间来
+   */
+  void** ret_addr = (void**)(sp);
+  *ret_addr = (void*)pfn;
+  ctx->regs[kRSP] = sp;   //此时sp指针指向了pfn，即*sp == pfn
+ 
+  ctx->regs[kRETAddr] = (char*)pfn; //保存pfn的地址
+ 
+  ctx->regs[kRDI] = (char*)s;  //保存pfn的参数1地址到 ctx->regs[kRDI]中对应rdi寄存器(该寄存器用来保存第一个参数的地址)，这个参数很重要决定了要执行的协程
+  ctx->regs[kRSI] = (char*)s1; //保存pfn的参数1地址ctx->regs[kRSI]中对应rsi寄存器(该寄存器用来保存第二个参数的地址)，这个参数目前好像没用到因为pfn只有一个参数
+  return 0;
+}
+```
