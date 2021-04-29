@@ -5,6 +5,7 @@
   * [进程](./LinuxProgramming/docs/02_process.md)
   * [进程间通信](./LinuxProgramming/docs/03_process_communication.md)
 * 操作系统:
+  * [简介](./OS/docs/00_intro.md)
   * [系统调用](./OS/docs/01_syscall.md)
   * [进程](./OS/docs/02_process.md)
   * [进程实验](./OS/docs/05_procese_exp.md)
