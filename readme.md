@@ -4,7 +4,7 @@
   * [文件系统](./LinuxProgramming/docs/01_file.md)
   * [进程](./LinuxProgramming/docs/02_process.md)
   * [进程间通信](./LinuxProgramming/docs/03_process_communication.md)
-* 操作系统:
+* HIT操作系统:
   * [简介](./OS/docs/00_intro.md)
   * [系统调用](./OS/docs/01_syscall.md)
   * [进程](./OS/docs/02_process.md)
@@ -12,6 +12,11 @@
   * [线程](./OS/docs/03_thread.md)
   * [线程实验](./OS/docs/04_thread_exp.md)
   * [CPU调度](./OS/docs/06_cpu_sched.md)
+
+* TsingHua操作系统:
+  * [os启动](./thOs/docs/01_os_start.md)
+  * [内存入门](./thOs/docs/02_intro_memory.md)
+  * [连续内存](./thOs/docs/03_continue_memory.md)
 * csapp:
   * [汇编入门](./csapp/asm/asm.md)
 * HTTP 
