@@ -1,4 +1,4 @@
-## CPU 调度策略
+ ## CPU 调度策略
 
 ```c
 // kernel/sched.c

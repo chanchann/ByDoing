@@ -5,3 +5,10 @@
 https://www.zhihu.com/question/66553828
 
 https://blog.csdn.net/solstice/article/details/6579232
+
+又称端到端协议
+
+## TCP/IP 五层模型
+
+## TCP 滑动窗口
+
