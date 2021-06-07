@@ -1,9 +1,9 @@
 ## Learning By Doing!!! 
 
 * System Programming:
-  * [文件系统](./LinuxProgramming/docs/01_file.md)
-  * [进程](./LinuxProgramming/docs/02_process.md)
-  * [进程间通信](./LinuxProgramming/docs/03_process_communication.md)
+  * [文件系统](./SystemProgramming/docs/01_file.md)
+  * [进程](./SystemProgramming/docs/02_process.md)
+  * [进程间通信](./SystemProgramming/docs/03_process_communication.md)
 * HIT操作系统:
   * [简介](./OS/docs/00_intro.md)
   * [系统调用](./OS/docs/01_syscall.md)
