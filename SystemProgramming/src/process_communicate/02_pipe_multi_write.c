@@ -7,6 +7,11 @@
 pipe多个写端一个读端的demo
 注意把sleep取消掉会有什么情况发生
 */
+
+// 可以看到,不加sleep时结果可能打印不全或者内容不一样。
+// 加上sleep后。虽然结果都是hello之后才world，但是也有可能是先world才hello
+// 因为循环因为i是先创建兄进程，所以hello的先打的概率比较大。
+
 int main(int argc, char** argv){
     pid_t pid;
     int fd[2], i, n;
