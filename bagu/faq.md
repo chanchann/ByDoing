@@ -1,3 +1,41 @@
+## c++ 实验面向对象
+
+http://blog.csdn.net/onlyshi/article/details/81672279?utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.baidujs&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.baidujs
+
+## 虚函数
+
+https://blog.csdn.net/primeprime/article/details/80776625
+
+https://zhuanlan.zhihu.com/p/41309205
+
+程序喵
+
+### 多继承的虚函数
+
+https://zhuanlan.zhihu.com/p/322529471?utm_source=wechat_timeline&utm_medium=social&utm_oi=830078056713568256
+
+### 菱形继承的虚函数 以及 内存布局
+
+https://zhuanlan.zhihu.com/p/335815756?utm_source=wechat_session&utm_medium=social&utm_oi=830078056713568256&s_r=0
+
+## 构造函数正确写法 -- 用init吗
+
+两种处理方式
+
+1. 构造函数抛异常
+
+2. init 二段构造 
+
+其优劣/特点
+
+https://www.zhihu.com/question/19892225
+
+https://blog.csdn.net/qq_16209077/article/details/52759994
+
+https://stackoverflow.com/questions/32323406/what-happens-if-a-constructor-throws-an-exception/32323458
+
+https://stackoverflow.com/questions/810839/throwing-exceptions-from-constructors
+
 ## 为什么c语言没有函数重载
 
 1、原因：C语言不能函数重载与函数编译后函数名有关。
@@ -78,3 +116,27 @@ static data segment
 加载指令和数据
 
 将程序入口地址写入下一行指令寄存器
+
+## 智能指针实现
+
+geek time
+
+## 用cout还是printf
+
+1. cout方式效率低：每次cout << endl，都会刷新一遍输出缓冲区。
+
+2. cout方式线程不安全：
+
+```cpp
+std::cout << "Hello " << "World ";
+
+// 等价
+std::operator<<(std::operator<<(std::cout, "Hello "), "World ");
+// 相当于调用了两次operator<<，不保证调用两次operator<<是线程安全的。
+```
+printf 就是使用较为麻烦，推荐
+
+更为推荐fmt 或者直接 spdlog 打日志
+
+
+
