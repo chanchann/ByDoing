@@ -21,5 +21,7 @@ https://blog.csdn.net/weixin_43914604/article/details/104722679
 https://www.bilibili.com/video/BV1g54y1R77E
 
 
-## 
+## epollhup 
+
+https://blog.csdn.net/zhouguoqionghai/article/details/94591475
 
