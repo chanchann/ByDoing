@@ -32,3 +32,7 @@ https://zhuanlan.zhihu.com/p/98030096
 
 https://segmentfault.com/a/1190000021199728#:~:text=%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E5%9C%A81997%20%E5%B9%B4%E7%94%B1%E9%BA%BB,%E7%9A%84%E5%8A%A8%E6%80%81%E4%BC%B8%E7%BC%A9%E7%AD%89%E9%97%AE%E9%A2%98%E3%80%82
 
+
+## code
+
+https://github.com/ioriiod0/consistent_hash
