@@ -72,3 +72,62 @@ Just because something can be distributed doesn’t mean it should be distribute
 
 在新旧世纪之交，人们曾经探索过几种服务的拆分方法，把一个大的单体系统拆分为若干个更小的、不运行在同一个进程的独立服务，这些服务拆分的方法，后来导致了面向服务架构（Service-Oriented Architecture）的一段兴盛期，我们把它称作是“SOA 时代”。
 
+### 三种代表性的服务拆分架构模式
+
+1. 烟囱式架构（Information Silo Architecture）
+
+这种信息系统，完全不会跟其他相关的信息系统之间进行互操作，或者是进行协调工作。
+
+2. 微内核架构（Microkernel Architecture）
+
+插件式架构（Plug-in Architecture）。
+
+主数据，公共服务、数据、资源，都集中到一块，成为一个被所有业务系统共同依赖的核心系统（Kernel，也称为 Core System）。
+
+具体的业务系统就能以插件模块（Plug-in Modules）的形式存在了，就可以为整个系统提供可扩展的、灵活的、天然隔离的功能特性
+
+适合实现一个能够支持二次开发的软件系统
+
+- 局限/使用前提
+
+假设系统中各个插件模块之间是互不认识的（不可预知系统会安装哪些模块），这些插件会访问内核中一些公共的资源，但不会发生直接交互。
+
+3. 事件驱动架构（Event-Driven Architecture）
+
+为了能让子系统之间互相通讯
+
+在子系统之间建立一套事件队列管道（Event Queues），来自系统外部的消息将以事件的形式发送到管道中
+
+https://www.zhihu.com/question/42061683
+
+
+## 04 | 微服务时代：SOA的革命者
+
+微服务是一种通过多个小型服务的组合，来构建单个应用的架构风格
+
+各个服务可以采用不同的编程语言、不同的数据存储技术、运行在不同的进程之中。
+
+服务会采取轻量级的通讯机制和自动化的部署机制，来实现通讯与运维。
+
+1. 围绕业务能力构建（Organized around Business Capabilities）
+
+2. 分散治理（Decentralized Governance）
+
+3. 通过服务来实现独立自治的组件（Componentization via Services）
+
+4. 产品化思维（Products not Projects）
+
+5. 数据去中心化（Decentralized Data Management）
+
+6. 轻量级通讯机制（Smart Endpoints and Dumb Pipes）
+
+7. 容错性设计（Design for Failure）
+
+8. 演进式设计（Evolutionary Design）
+
+9. 基础设施自动化（Infrastructure Automation）
+
+## 05 | 后微服务时代：跨越软件与硬件之间的界限
+
+
+
